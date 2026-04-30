@@ -10,7 +10,7 @@ interface Apartment {
   id: number;
   number: number;
   floor: number;
-  residents: [Resident, Resident];
+  resident: Resident;
 }
 
 interface Block {
@@ -20,54 +20,45 @@ interface Block {
 }
 
 const generateBlock = (blockId: string, blockName: string): Block => {
-  const namePool: Record<string, [string, string][]> = {
+  const namePool: Record<string, string[]> = {
     A: [
-      ['Ahmet Yılmaz', 'Fatma Yılmaz'],
-      ['Mehmet Demir', 'Ayşe Demir'],
-      ['Mustafa Kaya', 'Zeynep Kaya'],
-      ['Ali Şahin', 'Hatice Şahin'],
-      ['Hüseyin Çelik', 'Emine Çelik'],
-      ['İbrahim Arslan', 'Elif Arslan'],
-      ['Ömer Doğan', 'Meryem Doğan'],
-      ['Yusuf Aydın', 'Büşra Aydın'],
-      ['Hasan Koç', 'Türkan Koç'],
-      ['Kemal Erdoğan', 'Selin Erdoğan'],
+      'Ahmet Yılmaz', 'Mehmet Demir', 'Mustafa Kaya', 'Ali Şahin',
+      'Hüseyin Çelik', 'İbrahim Arslan', 'Ömer Doğan', 'Yusuf Aydın',
+      'Hasan Koç', 'Kemal Erdoğan', 'Serdar Özdemir', 'Taner Bulut',
+      'Halil Güneş', 'Ersin Kaplan', 'Onur Demirtaş', 'Suat Çakır',
+      'Mert Avcı', 'Ufuk Yıldırım', 'Berk Tuncer', 'Sinan Doğru',
     ],
     B: [
-      ['Serkan Aktaş', 'Gülşen Aktaş'],
-      ['Burak Özkan', 'Deniz Özkan'],
-      ['Emre Polat', 'Cansu Polat'],
-      ['Tolga Güler', 'Merve Güler'],
-      ['Oğuz Yıldız', 'Pınar Yıldız'],
-      ['Cem Çetin', 'Esra Çetin'],
-      ['Barış Kurt', 'Sibel Kurt'],
-      ['Murat Bozkurt', 'Arzu Bozkurt'],
-      ['Selim Acar', 'Gamze Acar'],
-      ['Alp Tunç', 'Derya Tunç'],
+      'Serkan Aktaş', 'Burak Özkan', 'Emre Polat', 'Tolga Güler',
+      'Oğuz Yıldız', 'Cem Çetin', 'Barış Kurt', 'Murat Bozkurt',
+      'Selim Acar', 'Alp Tunç', 'Fatih Kılıç', 'Engin Sarı',
+      'Volkan Gürel', 'Cihan Öztürk', 'Kadir Aslan', 'Levent Dinç',
+      'Tarık Şen', 'Cenk Yavuz', 'Orhan Kara', 'Erdal Toprak',
     ],
   };
 
-  const phones = [
-    ['05321234567', '05331234567'],
-    ['05341234568', '05351234568'],
-    ['05361234569', '05371234569'],
-    ['05381234570', '05391234570'],
-    ['05321234571', '05331234571'],
-    ['05341234572', '05351234572'],
-    ['05361234573', '05371234573'],
-    ['05381234574', '05391234574'],
-    ['05321234575', '05331234575'],
-    ['05341234576', '05351234576'],
-  ];
+  const phoneBases: Record<string, string[]> = {
+    A: [
+      '05321110001','05331110002','05341110003','05351110004',
+      '05361110005','05371110006','05381110007','05391110008',
+      '05321110009','05331110010','05341110011','05351110012',
+      '05361110013','05371110014','05381110015','05391110016',
+      '05321110017','05331110018','05341110019','05351110020',
+    ],
+    B: [
+      '05322220001','05332220002','05342220003','05352220004',
+      '05362220005','05372220006','05382220007','05392220008',
+      '05322220009','05332220010','05342220011','05352220012',
+      '05362220013','05372220014','05382220015','05392220016',
+      '05322220017','05332220018','05342220019','05352220020',
+    ],
+  };
 
-  const apartments: Apartment[] = Array.from({ length: 10 }, (_, i) => ({
+  const apartments: Apartment[] = Array.from({ length: 20 }, (_, i) => ({
     id: i + 1,
     number: i + 1,
     floor: Math.floor(i / 2) + 1,
-    residents: [
-      { name: namePool[blockId][i][0], phone: `+9${phones[i][0]}` },
-      { name: namePool[blockId][i][1], phone: `+9${phones[i][1]}` },
-    ],
+    resident: { name: namePool[blockId][i], phone: `+9${phoneBases[blockId][i]}` },
   }));
 
   return { id: blockId, name: blockName, apartments };
@@ -201,7 +192,7 @@ export default function App() {
               <Leaf style={{ width: 16, height: 16, color: 'white' }} />
             </div>
             <span style={{ color: 'white', fontWeight: 700, fontSize: '15px', letterSpacing: '0.02em' }}>
-              Saklıbahçe
+              Karmir Life
             </span>
           </div>
 
@@ -272,7 +263,7 @@ function WelcomeScreen({ onSelectBlock }: { onSelectBlock: (block: Block) => voi
           }}
         >
           <MapPin style={{ width: 12, height: 12 }} />
-          Kurye Erişim Paneli
+          Misafir Erişim Paneli
         </div>
 
         <h1
@@ -284,7 +275,7 @@ function WelcomeScreen({ onSelectBlock }: { onSelectBlock: (block: Block) => voi
             fontSize: 'clamp(1.75rem, 9vw, 2.5rem)',
           }}
         >
-          Saklıbahçe
+          Karmir Life
           <br />
           <span
             style={{
@@ -313,7 +304,7 @@ function WelcomeScreen({ onSelectBlock }: { onSelectBlock: (block: Block) => voi
         className="text-center"
         style={{ color: 'rgba(255,255,255,0.2)', fontSize: '12px', marginTop: '32px', lineHeight: 1.6 }}
       >
-        Paketi teslim etmek istediğiniz bloğu<br />seçerek sakinleri arayabilirsiniz.
+        Gitmek istediğiniz bloğu seçerek<br />görevliyi arayabilirsiniz.
       </p>
     </div>
   );
@@ -360,7 +351,7 @@ function BlockCard({ block, index, onSelect }: { block: Block; index: number; on
         className="flex items-center justify-between"
         style={{ marginTop: '14px' }}
       >
-        <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: '11px' }}>10 Daire · 5 Kat</span>
+        <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: '11px' }}>20 Daire · 10 Kat</span>
         <div
           className="flex items-center justify-center rounded-full"
           style={{ width: 28, height: 28, background: 'rgba(255,255,255,0.1)' }}
@@ -408,22 +399,22 @@ function ApartmentsScreen({
           Daire Seçin
         </h2>
         <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: '14px' }}>
-          Paketi bırakacağınız daireye dokunun
+          Gitmek istediğiniz daireye dokunun
         </p>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {Object.entries(floorGroups)
           .sort(([a], [b]) => Number(a) - Number(b))
           .map(([floor, apts]) => (
             <div key={floor}>
-              <div className="flex items-center gap-3" style={{ marginBottom: '10px' }}>
+              <div className="flex items-center gap-3" style={{ marginBottom: '8px' }}>
                 <span style={{ color: 'rgba(255,255,255,0.28)', fontSize: '11px', fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
                   {floor}. Kat
                 </span>
                 <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.06)' }} />
               </div>
-              <div className="grid grid-cols-2" style={{ gap: '12px' }}>
+              <div className="grid grid-cols-2" style={{ gap: '10px' }}>
                 {apts.map((apt) => (
                   <ApartmentCard key={apt.id} apt={apt} onSelect={onSelectApartment} />
                 ))}
@@ -477,7 +468,7 @@ function ApartmentCard({ apt, onSelect }: { apt: Apartment; onSelect: (a: Apartm
       <div style={{ color: 'white', fontWeight: 700, fontSize: 'clamp(1rem, 4.5vw, 1.2rem)' }}>
         No {apt.number}
       </div>
-      <div style={{ color: 'rgba(255,255,255,0.28)', fontSize: '12px', marginTop: '2px' }}>2 sakin</div>
+      <div style={{ color: 'rgba(255,255,255,0.28)', fontSize: '12px', marginTop: '2px' }}>1 görevli</div>
     </button>
   );
 }
@@ -507,44 +498,21 @@ function ResidentsScreen({ block, apartment }: { block: Block; apartment: Apartm
           {block.name} · Daire {apartment.number}
         </div>
         <h2 style={{ color: 'white', fontWeight: 900, fontSize: 'clamp(1.6rem, 7vw, 2rem)', marginBottom: '4px' }}>
-          Sakinleri Arayın
+          Görevliyi Arayın
         </h2>
         <p style={{ color: 'rgba(255,255,255,0.38)', fontSize: '14px' }}>
-          Butona basarak hemen bağlanın
+          Butona basarak görevliyle bağlanın
         </p>
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-        {apartment.residents.map((resident, idx) => (
-          <ResidentCard key={idx} resident={resident} index={idx} />
-        ))}
-      </div>
-
-      <div
-        className="text-center"
-        style={{
-          marginTop: '24px',
-          borderRadius: '16px',
-          padding: '14px 16px',
-          background: 'rgba(251,191,36,0.07)',
-          border: '1px solid rgba(251,191,36,0.14)',
-        }}
-      >
-        <p style={{ color: 'rgba(252,211,77,0.65)', fontSize: '12px', lineHeight: 1.6 }}>
-          Cevap alamazsanız 2. sakini aramayı deneyebilirsiniz.
-        </p>
-      </div>
+      <ResidentCard resident={apartment.resident} />
     </div>
   );
 }
 
-function ResidentCard({ resident, index }: { resident: Resident; index: number }) {
+function ResidentCard({ resident }: { resident: Resident }) {
   const [pressed, setPressed] = useState(false);
-  const avatarCfg = [
-    { from: '#052e16', to: '#16a34a', ring: 'rgba(34,197,94,0.28)' },
-    { from: '#3b1a04', to: '#b45309', ring: 'rgba(217,119,6,0.28)' },
-  ];
-  const c = avatarCfg[index];
+  const c = { from: '#052e16', to: '#16a34a', ring: 'rgba(34,197,94,0.28)' };
 
   return (
     <div
@@ -587,7 +555,7 @@ function ResidentCard({ resident, index }: { resident: Resident; index: number }
                 color: 'rgba(255,255,255,0.38)',
               }}
             >
-              {index + 1}. Sakin
+              Görevli
             </div>
           </div>
         </div>
